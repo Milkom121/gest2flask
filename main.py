@@ -1,19 +1,14 @@
 from bson import ObjectId
 from flask import Flask, request
 from flask_pymongo import PyMongo
-import json
+import bson.json_util as json
 import customer_dao
 import reservation_dao
 
 
-########################################################################
-###############################APP+DB SETUP##########################
-########################################################################
-
 app = Flask(__name__)
 app.config["MONGO_URI"] = 'mongodb://127.0.0.1:27017/gestionale2022_2'
 mongo = PyMongo(app)
-
 
 ########################################################################
 ###############################CUSTOMERS VIEWS##########################
@@ -27,10 +22,12 @@ def customers():
     elements = []
     for document in cursor:
         elements.append(document)
-    return json.dumps(str(elements))
+    return json.dumps(elements)
+    #parsed = json.load(elements)
+    # return json.dumps(parsed , indent=4, sort_keys=True)
 
 
-@app.route('/api/customers/')
+@app.route('/api/getCustomer/')
 def getCustomer(methods = 'GET'):
     field = request.args.get('field')
     value = request.args.get('value')
@@ -132,7 +129,6 @@ def newReservation(methods = ['POST']):
       'daySlot': daySlot,
       'tickets': tickets,
       'totalCost': totalCost,
-
     }
     reservationDao.insertReservation(map)
     return 'reservation added'
@@ -145,4 +141,13 @@ def deleteReservation(methods = ['DELETE']):
     objInstance = ObjectId(stringId)
     reservationDao.deleteReservation(objInstance)
     return 'reservation deleted'
+
+
+########################################################################
+###############################APP+DB SETUP##########################
+########################################################################
+if __name__ == '__main__':
+    app.run('0.0.0.0', debug=True, port=5000, ssl_context='adhoc')
+
+
 

@@ -35,7 +35,7 @@ class DBManager :
     #     return elements
 
 
-    def read(self, collection, searchKeysValuesPairs):
+    def searchOne(self, collection, searchKeysValuesPairs):
         return collection.find(searchKeysValuesPairs)
 
     def readOne(self, collection, idToken):

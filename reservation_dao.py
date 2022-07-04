@@ -12,7 +12,7 @@ class ReservationDao:
         self.dbManager.insert(self.collection, reservationMap)
 
     def findReservation(self, searchKeyValuePair):
-        return self.dbManager.read(self.collection, searchKeyValuePair)
+        return self.dbManager.searchOne(self.collection, searchKeyValuePair)
 
     def editReservation(self, idToken, changedKeysValuesPairs):
         reservationInstanceMap = self.dbManager.readOne(self.collection, idToken)

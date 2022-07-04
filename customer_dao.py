@@ -14,7 +14,7 @@ class CustomerDao:
         self.dbManager.insert(self.collection, customerMap)
 
     def findCustomer(self, searchKeyValuePair):
-        return self.dbManager.read(self.collection, searchKeyValuePair)
+        return self.dbManager.searchOne(self.collection, searchKeyValuePair)
 
     def editCustomer(self, ObjectId, changedKeysValuesPairs):
         # customerInstanceMap = self.dbManager.readOne(self.collection, idToken)

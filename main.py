@@ -15,7 +15,6 @@ mongo = PyMongo(app)
 ########################################################################
 
 customerDao = customer_dao.CustomerDao()
-
 @app.route('/api/customers')
 def customers():
     cursor = mongo.db.Customers.find()
@@ -35,7 +34,16 @@ def getCustomer(methods = 'GET'):
     cursor = customerDao.findCustomer({field: value})
     for document in cursor:
         elements.append(document)
-    return json.dumps(str(elements))
+    return json.dumps(elements)
+
+@app.route('/api/getCustomerById/')
+def getCustomerById(methods = 'GET'):
+    value = request.args.get('value')
+    elements = []
+    cursor = customerDao.findCustomer({"_id": ObjectId(value)})  #{"_id": ObjectId(obj_id_to_find)}
+    for document in cursor:
+        elements.append(document)
+    return json.dumps(elements)
 
 @app.route('/api/modifyCustomer')
 def modifyCustomer(methods = ['GET', 'POST']):
@@ -85,7 +93,7 @@ def reservations():
     elements = []
     for document in cursor:
         elements.append(document)
-    return json.dumps(str(elements))
+    return json.dumps(elements)
 
 
 @app.route('/api/getReservation')
@@ -96,7 +104,7 @@ def getReservation(methods = 'GET'):
     cursor = reservationDao.findReservation({field: value})
     for document in cursor:
         elements.append(document)
-    return json.dumps(str(elements))
+    return json.dumps(elements)
 
 
 @app.route('/api/modifyReservation')
@@ -144,7 +152,7 @@ def deleteReservation(methods = ['DELETE']):
 
 
 ########################################################################
-###############################APP+DB SETUP##########################
+###############################APP+DB SETUP#############################
 ########################################################################
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=True, port=5000, ssl_context='adhoc')
